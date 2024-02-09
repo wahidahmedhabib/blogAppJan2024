@@ -14,12 +14,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCaQWVq6gc06IzgiKca9Z-m86fdH2t17tI",
-  authDomain: "fir-pro-2-9540d.firebaseapp.com",
-  projectId: "fir-pro-2-9540d",
-  storageBucket: "fir-pro-2-9540d.appspot.com",
-  messagingSenderId: "795819951543",
-  appId: "1:795819951543:web:16b5134b7fc013d8269432",
+  // add your firebase config here.....
 };
 
 // Initialize Firebase
@@ -42,9 +37,9 @@ const auth = getAuth(app);
 //   console.log('Uploaded a blob or file!');
 // });
 
-export { app, auth, firebaseConfig };
-
 const storage = getStorage();
+export { app, auth, firebaseConfig,storage };
+
 
 // // Create the file metadata
 // /** @type {any} */
