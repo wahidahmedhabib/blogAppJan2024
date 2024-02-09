@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   updateEmail,
+
 } from "firebase/auth";
 
 import {
@@ -16,10 +17,10 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { app } from "./fireBase";
+import { app ,storage} from "./fireBase";
 export const db = getFirestore(app);
 import { deleteBlog, logInAcc, logOutAcc } from "../store/authSlice";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable, getStorage } from "firebase/storage";
 
 // import { auth } from "firebase/auth";
 
@@ -44,7 +45,7 @@ export const authService = {
               console.log(file);
               return new Promise((resolve, reject) => {
                 // 222222 brackettt
-                const storageRef = ref(Storage, `images/${file.name}`);
+                const storageRef = ref(storage, `images/${file.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, file);
                 uploadTask.on(
                   "state_changed",
@@ -280,41 +281,50 @@ export const authService = {
     }
   },
   uploadeFile: (file) => {
-    console.log(file);
+    
     return new Promise((resolve, reject) => {
-      const storageRef = ref(Storage, `images/${file.name}`);
+      if(!file){
+        reject("No file priovided.");
+        return;
+      }
+      console.log("File to upload...",file.name)
+      // edit folder and file name below...
+      const storageRef = ref(storage, `images/neon`);
       const uploadTask = uploadBytesResumable(storageRef, file);
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+                case "paused":
+                    console.log("Upload is paused");
+                    break;
+                case "running":
+                    console.log("Upload is running");
+                    break;
+            }
         },
         (error) => {
-          console.log("nahii uplode hue---->>>", error);
-          reject(error);
+            console.error("Upload error:", error);
+            reject(error);
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            resolve(downloadURL);
-            // imges.src = downloadURL
-
-            console.log("File available at", downloadURL);
-          });
+            getDownloadURL(uploadTask.snapshot.ref)
+                .then((downloadURL) => {
+                    console.log("File uploaded successfully. Download URL:", downloadURL);
+                    resolve(downloadURL);
+                })
+                .catch((error) => {
+                    console.error("Error getting download URL:", error);
+                    reject(error);
+                });
         }
-      );
-    });
-  },
-};
+    );
+});
+}
+}
+
 
 export const {
   creatAccount,

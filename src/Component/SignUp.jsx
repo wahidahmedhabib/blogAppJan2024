@@ -35,16 +35,26 @@ const SignUp = () => {
 
         const data = await creatAccount(name, email, password,imgUrl, dispatch, navigate, active, setActive)
         // console.log(data)
+        // console.log(e.target.files[0])
         // uploadeFile(imgUrl)
         // dispatch(logInAcc(data))
     }
     const urlImg = (e) => {
-        console.log(e.target.files[0])
-        let fileName = e.target.files[0]
-        // let imageurl = URL.createObjectURL(fileName)
-        setImgUrl(fileName)
-        // console.log(imgUrl)
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            uploadeFile(files[0])
+                .then((downloadURL) => {
+                    console.log("File uploaded successfully. Download URL:", downloadURL);
+                    setImgUrl(downloadURL); // Assuming you have a state to store the URL
+                })
+                .catch((error) => {
+                    console.error("Error uploading file:", error);
+                });
+        } else {
+            console.error("No file selected.");
+        }
     }
+    
 
     return (
         <div className=' min-h-64 mt-20  flex justify-center flex-col gap-2 items-center border-4 bg-blue-700 m-4 w-80 '>
