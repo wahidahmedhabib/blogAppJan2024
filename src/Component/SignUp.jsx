@@ -12,37 +12,86 @@ import { useNavigate } from 'react-router-dom';
 import { IoCamera } from 'react-icons/io5';
 
 import { uploadeFile } from '../FireBAse/auth';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 // import { uploadeFile } from '../FireBAse/fireBase';
 
+const storage = getStorage();
 
 const SignUp = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [active, setActive] = useState(false)
-    const [edit, setEdit] = useState(false)
+    // const [edit, setEdit] = useState(false)
     const [imgUrl, setImgUrl] = useState('')
+    const [file, setFile] = useState('')
 
     const getData = useSelector(state => state.auth)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    console.log(getData)
-    console.log(imgUrl)
+
+    console.log(getData.userList)
+    console.log(getData.currentUser)
+    console.log(file)
 
     const signUp = async () => {
-
-        const data = await creatAccount(name, email, password,imgUrl, dispatch, navigate, active, setActive)
-        // console.log(data)
+        if (file) {
+            const storageRef = ref(storage, `images/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const progress =
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log("Upload is " + progress + "% done");
+                    switch (snapshot.state) {
+                        case "paused":
+                            console.log("Upload is paused");
+                            break;
+                        case "running":
+                            console.log("Upload is running");
+                            break;
+                    }
+                },
+                (error) => {
+                    console.log("nahii uplode hue---->>>", error);
+                    // reject(error);
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        // resolve(downloadURL);
+                        // imges.src = downloadURL
+                        setFile(downloadURL)
+                        const data = creatAccount(name, email, password, downloadURL, dispatch, navigate, active, setActive)
+                        // const data =  creatAccount(name, email, password, downloadURL, dispatch, navigate, active, setActive)
+                        console.log("File available at", downloadURL);
+                    });
+                }
+            );
+        }
+        else {
+            const data = await creatAccount(name, email, password, file, dispatch, navigate, active, setActive)
+        }
         // uploadeFile(imgUrl)
         // dispatch(logInAcc(data))
     }
     const urlImg = (e) => {
-        console.log(e.target.files[0])
+        // console.log(e.target.files[0])
+
         let fileName = e.target.files[0]
-        // let imageurl = URL.createObjectURL(fileName)
-        setImgUrl(fileName)
+        let filee = e.target.files[0]
+        //  (file) {
+        setFile(filee)
+        // console.log(file);
+        // return new Promise((resolve, reject) => {
+
+        // });
+        //   },
+        let imageurl = URL.createObjectURL(fileName)
+        setImgUrl(imageurl)
+
         // console.log(imgUrl)
     }
 
@@ -57,8 +106,10 @@ const SignUp = () => {
                     <img
                         // onChange={urlImg}
                         // onChange={}
-                        src={`${edit ? imgUrl : " /src/assets/imgAvetar22.png"}`}
-                        className='border-black border-2' alt="pro PIC" />
+
+                        src={`${imgUrl ? imgUrl : " /src/assets/imgAvetar22.png"}`}
+                        // src={`${edit ? imgUrl : " /src/assets/imgAvetar22.png"}`}
+                        className='border-black border-2  h-full w-full bg-no-repeat rounded-full ' alt="pro PIC" />
                 </div>
 
                 <div
@@ -72,9 +123,9 @@ const SignUp = () => {
                 {/* <RiImageEditFill className='relative top-5 left-5 ' /> */}
                 <button
                     className=' h-8 w-8 drop-shadow-lg shadow-2xl
-    shadow-blue-700 flex
-    items-center justify-center rounded-full
-    text-xl border-2  relative bottom-24 left-[90px] ' >
+                         shadow-blue-700 flex
+                          items-center justify-center rounded-full
+                          text-xl border-2  relative bottom-24 left-[90px] ' >
                     <label htmlFor="img"
                     >
                         <IoCamera />

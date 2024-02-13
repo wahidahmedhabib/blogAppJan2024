@@ -35,7 +35,10 @@ function Blogs({ blog }) {
   // const blogState = useSelector(state => state.blogs.blogsList)
   // const userState = useSelector((state) => state.auth.userList);
 
-  // console.log(blog)
+
+  
+
+  console.log(blog.image)
   // console.log(userState);
 
   const [editt, setEditt] = useState(false)
@@ -92,7 +95,8 @@ function Blogs({ blog }) {
   //   })
   // }
 
-  // console.log(blog)
+
+  // console.log(blog.image)
 
   const editBlogBtn = async (id) => {
     console.log("edit.....")
@@ -119,8 +123,11 @@ function Blogs({ blog }) {
         className="min-h-40 max-w-3xl min-w-72  mob:w-full p-1 border-4 my-3"
       >
         <div className="bg-slate-200 flex h-16 items-center px-1">
-          <figure className="h-14 w-14 rounded bg-red-300 flex items-center justify-center">
-            imgg
+          <figure className="h-14 w-14 rounded-full border border-black flex items-center justify-center">
+            <img className="h-full w-full bg-center rounded-full"
+            //  src='/src/assets/imgAvetar22.png'
+             src={blog.image ? blog.image : '/src/assets/imgAvetar22.png'}
+             alt="" />
           </figure>
           <div className="px-2 w-[90%] ">
             {

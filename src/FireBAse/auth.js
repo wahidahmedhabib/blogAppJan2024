@@ -19,85 +19,87 @@ import {
 import { app } from "./fireBase";
 export const db = getFirestore(app);
 import { deleteBlog, logInAcc, logOutAcc } from "../store/authSlice";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 // import { auth } from "firebase/auth";
 
 const auth = getAuth();
+const storage = getStorage();
 
 // let uid;
 
 export const authService = {
   creatAccount: async (name, email, password, file, dispatch, navigate) => {
-    // console.log(file)
-    console.log(name, email, password);
+    console.log(file)
+    // console.log(name, email, password);
     // const navigate = useNavigate();
     // let user
     try {
       await createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
           const user = userCredential.user;
-          let imageurl = "pp[pppp";
+          // let imageurl ='';
           if (user) {
-            () => {
-              // 11111 brackettt
-              console.log(file);
-              return new Promise((resolve, reject) => {
-                // 222222 brackettt
-                const storageRef = ref(Storage, `images/${file.name}`);
-                const uploadTask = uploadBytesResumable(storageRef, file);
-                uploadTask.on(
-                  "state_changed",
-                  (snapshot) => {
-                    const progress =
-                      (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log("Upload is " + progress + "% done");
-                    switch (snapshot.state) {
-                      case "paused":
-                        console.log("Upload is paused");
-                        break;
-                      case "running":
-                        console.log("Upload is running");
-                        break;
-                    }
-                  },
-                  (error) => {
-                    console.log("nahii uplode hue---->>>", error);
-                    reject(error);
-                  },
-                  () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(
-                      (downloadURL) => {
-                        resolve(downloadURL);
-                        // imges.src = downloadURL
-                        imageurl = downloadURL;
-                        console.log("File available at", downloadURL);
-                      }
-                    );
-                  }
-                );
-              }); // 2222222222 brackettt
-            }, // 11111 brackettt
-              // uploadeFile();
-              // setActive(true);
-              // console.log(!active);
-              await setDoc(doc(db, "users", user.uid), {
-                name,
-                email,
-                id: user.uid,
-                active: true,
-                image: imageurl,
-              }).then(() => {
-                // console.log("user log in", {
-                //   name: name,
-                //   email,
-                //   uid: user.uid,
-                // });
-                // user = { name: name, email, uid: user.uid }
-                // return { name: name, email, uid: user.uid };
-                dispatch(logInAcc({ name: name, email, uid: user.uid }));
-                navigate("/");
-              });
+            // () => {
+            //   // 11111 brackettt
+            //   console.log(file);
+            //   return new Promise((resolve, reject) => {
+            //     // 222222 brackettt
+            //     const storageRef = ref(Storage, `images/${file.name}`);
+            //     const uploadTask = uploadBytesResumable(storageRef, file);
+            //     uploadTask.on(
+            //       "state_changed",
+            //       (snapshot) => {
+            //         const progress =
+            //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            //         console.log("Upload is " + progress + "% done");
+            //         switch (snapshot.state) {
+            //           case "paused":
+            //             console.log("Upload is paused");
+            //             break;
+            //           case "running":
+            //             console.log("Upload is running");
+            //             break;
+            //         }
+            //       },
+            //       (error) => {
+            //         console.log("nahii uplode hue---->>>", error);
+            //         reject(error);
+            //       },
+            //       () => {
+            //         getDownloadURL(uploadTask.snapshot.ref).then(
+            //           (downloadURL) => {
+            //             resolve(downloadURL);
+            //             // imges.src = downloadURL
+            //             imageurl = downloadURL;
+            //             console.log("File available at", downloadURL);
+            //           }
+            //         );
+            //       }
+            //     );
+            //   }); // 2222222222 brackettt
+            // }, // 11111 brackettt
+            // uploadeFile();
+            // setActive(true);
+            // console.log(!active);
+            await setDoc(doc(db, "users", user.uid), {
+              name,
+              email,
+              id: user.uid,
+              active: true,
+              image: file,
+            }).then(() => {
+              dispatch(
+                logInAcc({ name: name, email, uid: user.uid, image: file })
+              );
+              navigate("/");
+              window.location.reload(false);
+            });
           }
           // uid = user.uid;
           // console.log(user.uid);
@@ -157,18 +159,18 @@ export const authService = {
     dispatch(logOutAcc());
     navigate("/");
   },
-  addData: async (title, para, userId, name) => {
+  addData: async (title, para, userId, name , image) => {
     try {
-      console.log(title, para, userId);
+      console.log(title, para, userId , image);
       const docRef = await addDoc(collection(db, "blogs"), {
         name: name,
         title: title,
         para: para,
         active: true,
         userId,
-        // image: image,
+        image: image,
       });
-      alert(" success fully Added");
+      alert("success fully Added");
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);

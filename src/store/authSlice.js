@@ -25,22 +25,21 @@ const initialState = {
     {
       name: "wahid",
       id: "hjhhhh",
-      key:'78uy89i99o9e3e4',
+      key: "78uy89i99o9e3e4",
       // para: "PAKISTAN is our sweet homeland pakistan had appered on the world map in 1947",
       // title: "PAKISTANN ",
-      image:'',
+      image: "",
       active: true,
       title: "hnnn",
       para: "istan npkkistan npakstan npakist tann",
     },
   ],
-  currentUser: { active: false, id: "", name: "", email: "" },
+  currentUser: { active: false, id: "", name: "", email: "", image: "" },
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-
   reducers: {
     createAcc: (state, action) => {
       console.log(state);
@@ -65,13 +64,17 @@ const authSlice = createSlice({
     },
 
     reciveData: (state, action) => {
-
       // console.log(state);
       // console.log(action);
-     
+
       state.userList = action.payload;
 
       // console.log(state);
+    },
+    userDataUpdate: (state, action) => {
+      console.log(state);
+      console.log(action);
+      // state.currentUser = action.payload
     },
     addBlog: (state, action) => {
       console.log(state);
@@ -119,6 +122,7 @@ export const {
   reciveData,
   addBlog,
   deleteBlog,
+  userDataUpdate,
   logOutAcc,
   editBlog,
 } = authSlice.actions;

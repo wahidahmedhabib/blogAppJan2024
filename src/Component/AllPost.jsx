@@ -33,7 +33,7 @@ function AllPost() {
                 });
                 // console.log('jjjj')
                 setLoading(false)
-                // console.log(userArray)
+                console.log(userArray)
                 dispatch(reciveData(userArray));
             } catch (err) {
                 console.log(err);
