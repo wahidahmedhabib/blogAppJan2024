@@ -26,4 +26,3 @@ function EditPage() {
 }
 
 export default EditPage
-// ReactDOM.createRoot(document.getElementById('root')!).render(<App />)

@@ -8,33 +8,34 @@ import Loader from './Loader';
 function AllPost() {
 
     const [loading, setLoading] = useState(true)
-
     const userState = useSelector((state) => state.auth.userList);
-    // console.log(userState);
-
-    const iddddd = useSelector((state) => state.auth.currentUser.id);
-    // console.log(iddddd);
-
     const dispatch = useDispatch()
     useEffect(() => {
-                // console.log('jjjj')
-                async function allData() {
-                // console.log('jjjj666666666666666')
-                try {
-                // setLoading(false)
-
-                let userArray = [];
-                const userss = await getDocs(collection(db, "blogs"));
-                userss.forEach((doc) => {
+        async function allData() {
+            try {
+                let blogsArray = [];
+                const blogss = await getDocs(collection(db, "blogs"));
+                blogss.forEach((doc) => {
                     let data = doc.data();
                     let key = doc.id;
                     data.key = key;
-                    userArray.push(data);
+                    blogsArray.push(data);
                 });
-                // console.log('jjjj')
+                let usersArray = []
+                const userss = await getDocs(collection(db, 'users'))
+                userss.forEach((doc) => {
+                    usersArray.push(doc.data())
+                })
+                let finalArray = []
+                blogsArray.map((blogg) => {
+                    usersArray.map((user) => {
+                        if (blogg.userId == user.id) {
+                            finalArray.push({ ...blogg, ...user })
+                        }
+                    })
+                })
+                dispatch(reciveData(finalArray));
                 setLoading(false)
-                console.log(userArray)
-                dispatch(reciveData(userArray));
             } catch (err) {
                 console.log(err);
             }
@@ -44,24 +45,17 @@ function AllPost() {
 
     return (
         <div className='flex flex-wrap  min-w-72  items-center justify-center mt-20 gap-3 bor der-4 bord er-red-700  '>
-
             {
                 loading ? <div className='h-[75vh]  '>
-                    <Loader />
-                    
+                    <Loader size={120} />
                 </div>
                     :
                     userState?.map((blog) => {
-                        // console.log(blog)
-                        // console.log(id)
                         return (
                             <Blogs blog={blog} key={blog.key} />
                         )
                     })
             }
-
-
-
         </div>
     )
 }

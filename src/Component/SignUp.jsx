@@ -1,41 +1,19 @@
 import React, { useState } from 'react'
-
-// import { getAuth } from "firebase/auth";
 import { creatAccount } from '../FireBAse/auth';
-
 import { useDispatch, useSelector } from 'react-redux'
-// const auth = getAuth(app)
-// import { creatAccount } from '../FireBAse/auth';
-
-import { createAcc, logInAcc } from '../store/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoCamera } from 'react-icons/io5';
-
-import { uploadeFile } from '../FireBAse/auth';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-// import { uploadeFile } from '../FireBAse/fireBase';
-
 const storage = getStorage();
-
 const SignUp = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [active, setActive] = useState(false)
-    // const [edit, setEdit] = useState(false)
     const [imgUrl, setImgUrl] = useState('')
     const [file, setFile] = useState('')
-
-    const getData = useSelector(state => state.auth)
-
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-
-    console.log(getData.userList)
-    console.log(getData.currentUser)
-    console.log(file)
-
     const signUp = async () => {
         if (file) {
             const storageRef = ref(storage, `images/${file.name}`);
@@ -45,28 +23,20 @@ const SignUp = () => {
                 (snapshot) => {
                     const progress =
                         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log("Upload is " + progress + "% done");
                     switch (snapshot.state) {
                         case "paused":
-                            console.log("Upload is paused");
                             break;
                         case "running":
-                            console.log("Upload is running");
                             break;
                     }
                 },
                 (error) => {
                     console.log("nahii uplode hue---->>>", error);
-                    // reject(error);
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        // resolve(downloadURL);
-                        // imges.src = downloadURL
                         setFile(downloadURL)
                         const data = creatAccount(name, email, password, downloadURL, dispatch, navigate, active, setActive)
-                        // const data =  creatAccount(name, email, password, downloadURL, dispatch, navigate, active, setActive)
-                        console.log("File available at", downloadURL);
                     });
                 }
             );
@@ -74,34 +44,21 @@ const SignUp = () => {
         else {
             const data = await creatAccount(name, email, password, file, dispatch, navigate, active, setActive)
         }
-        // uploadeFile(imgUrl)
-        // dispatch(logInAcc(data))
     }
     const urlImg = (e) => {
-        // console.log(e.target.files[0])
-
         let fileName = e.target.files[0]
         let filee = e.target.files[0]
-        //  (file) {
         setFile(filee)
-        // console.log(file);
-        // return new Promise((resolve, reject) => {
-
-        // });
-        //   },
         let imageurl = URL.createObjectURL(fileName)
         setImgUrl(imageurl)
-
-        // console.log(imgUrl)
     }
 
     return (
-        <div className=' min-h-64 mt-20  flex justify-center flex-col gap-2 items-center border-4 bg-blue-700 m-4 w-80 '>
+        <div className=' min-h-64 mt-20 py-2 rounded-lg shadow-2xl shadow-blue-500/40  flex justify-center flex-col gap-2 items-center border-4 bg-white  m-4 w-80 '>
             <h1 className='font-bold text-2xl m-4'>Sign-Up</h1>
+            <div className=' h-32'>
 
-            <div className='border-yellow-600 h-32 border-2'>
-
-                <div className=' border-2 border-red-800 h-28 w-28 flex items-center justify-center   rounded-full mx-auto mt-4  '>
+                <div className=' h-28 w-28 flex items-center justify-center   rounded-full mx-auto mt-4  '>
 
                     <img
                         // onChange={urlImg}
@@ -109,7 +66,7 @@ const SignUp = () => {
 
                         src={`${imgUrl ? imgUrl : " /src/assets/imgAvetar22.png"}`}
                         // src={`${edit ? imgUrl : " /src/assets/imgAvetar22.png"}`}
-                        className='border-black border-2  h-full w-full bg-no-repeat rounded-full ' alt="pro PIC" />
+                        className='border-black border  h-full w-full bg-no-repeat rounded-full ' alt="pro PIC" />
                 </div>
 
                 <div
@@ -135,27 +92,34 @@ const SignUp = () => {
                     className='hidden'
                     onChange={urlImg}
                     id="img" />
+            </div>
+            <div>
+                <input type="text"
+                    className='border-2'
+                    placeholder='Name' onChange={e => setName(e.target.value)} />
 
             </div>
             <div>
-                <input type="text" placeholder='Name' onChange={e => setName(e.target.value)} />
+                <input
+                    type="email"
+                    className='border-2'
+                    placeholder='Email'
+                    onChange={e => setEmail(e.target.value)} />
 
             </div>
-            <div>
-                <input type="email" placeholder='Email' onChange={e => setEmail(e.target.value)} />
-
-            </div>
-            <input type="password" placeholder='Passsword' onChange={e => setPassword(e.target.value)} />
-            <div className='gap-2'>
-                <button>
-                    LogIn?
+            <input type="password"
+                className='border-2'
+                placeholder='Passsword' onChange={e => setPassword(e.target.value)} />
+            <div className='flex  gap-2 '>
+                <button className='bg-blue-400 w-20  rounded-lg h-8 font-semibold' onClick={signUp}>
+                    Sign Up
                 </button>
-                <div>
-
-                </div>
-                <button onClick={signUp}>
-                    SignUp
+                <button className='text-blue-500' >
+                    <Link to={'/login'}>
+                        LogIn?
+                    </Link>
                 </button>
+
             </div>
 
         </div>

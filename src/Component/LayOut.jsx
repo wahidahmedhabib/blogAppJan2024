@@ -6,15 +6,11 @@ function LayOut() {
     return (
         <main className='h-full '>
             <NavBar />
-
-            <div className=' w-full flex items-center justify-center border-2 bg-p ink-400 mb-[9vh]   '>
-
+            <div className=' min-h-screen w-full flex items-center justify-center border-2 mb-[9vh]   '>
                 <Outlet />
-
             </div>
             <Footer />
         </main>
     )
 }
-
 export default LayOut
