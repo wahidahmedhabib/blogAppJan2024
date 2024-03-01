@@ -31,7 +31,7 @@ const auth = getAuth();
 
 export const authService = {
   creatAccount: async (name, email, password, file, dispatch, navigate) => {
-    console.log(file);
+    // console.log(file);
     try {
       await createUserWithEmailAndPassword(auth, email, password)
         .then(async (userCredential) => {
@@ -55,9 +55,20 @@ export const authService = {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          Swal.fire({
+            title: "error !",
+            text: `your error : ${err}`,
+
+            icon: "error",
+          });
         });
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        title: "error",
+        text: error,
+        icon: "error",
+      });
     }
   },
   logInAccount: async (email, password, navigate) => {
@@ -72,12 +83,22 @@ export const authService = {
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
+          // const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorMessage);
+          Swal.fire({
+            title: "error !",
+            text: errorMessage,
+            icon: "error",
+          });
         });
     } catch (err) {
       console.log(err);
+      Swal.fire({
+        title: "error !",
+        text: `your error : ${err}`,
+        icon: "error",
+      });
     }
   },
   currentUser: async () => {
@@ -95,6 +116,11 @@ export const authService = {
       });
     } catch (err) {
       console.log(err);
+      Swal.fire({
+        title: "error",
+        // text: "your Blog Added Successfully",
+        icon: "error",
+      });
     }
   },
   signOutBtn: async (navigate, dispatch) => {
@@ -102,6 +128,9 @@ export const authService = {
     console.log("logOut doneee");
 
     dispatch(logOutAcc());
+    Swal.fire({
+      title: "You Are SignOut !",
+    });
     navigate("/");
   },
   addData: async (title, para, userId, name, setLoading) => {
@@ -121,6 +150,11 @@ export const authService = {
       setLoading(false);
     } catch (e) {
       console.error("Error adding document: ", e);
+      Swal.fire({
+        title: "Error",
+
+        text: `your error : ${err}`,
+      });
     }
   },
 
@@ -131,12 +165,22 @@ export const authService = {
       await deleteDoc(doc(db, "blogs", id));
       console.log("done.....");
       dispatch(deleteBlog(id));
+      Swal.fire({
+        title: "delete  !",
+        text: "your Blog delete Successfully",
+        icon: "delete",
+      });
     } catch (err) {
       console.log(err);
+      Swal.fire({
+        title: "error !",
+        text: `your error : ${err}`,
+
+        icon: "error",
+      });
     }
   },
   updateData: async (id, title, para, blog, navigate) => {
-  
     try {
       const updated = await setDoc(doc(db, "blogs", id), {
         name: blog.name,
@@ -146,22 +190,43 @@ export const authService = {
         userId: blog.userId,
         para,
       });
+      Swal.fire({
+        title: "updated !",
+        text: "your Blog updated Successfully",
+        icon: "success",
+      });
       window.location.reload(false);
     } catch (err) {
       console.log(err);
+      Swal.fire({
+        title: "error !",
+        text: "your Blog not update",
+        icon: "error",
+      });
     }
   },
   updateUserData: async (uid, name, email, dispatch) => {
     try {
-  
       const updated = await setDoc(doc(db, "users", uid), {
         active: true,
         name,
         email,
         id: uid,
       });
+      Swal.fire({
+        title: "updated !",
+        text: "your data updated Successfully",
+        icon: "success",
+      });
     } catch (err) {
       console.log(err);
+      Swal.fire({
+        title: "error !",
+        text: `your error : ${err}`,
+
+        // text: "your Blog Added Successfully",
+        icon: "error",
+      });
     }
   },
   updateEmailAddress: async (emaill) => {
@@ -183,6 +248,12 @@ export const authService = {
       }
     } catch (err) {
       console.log(err);
+      Swal.fire({
+        title: "error !",
+        text: `your error : ${err}`,
+
+        icon: "error",
+      });
     }
   },
   getUserData: async (id, dispatch) => {

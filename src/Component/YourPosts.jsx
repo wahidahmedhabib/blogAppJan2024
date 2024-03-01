@@ -49,15 +49,13 @@ function YourPosts() {
             fillterArry.map((blog) => {
               return (
                 < Blogs blog={blog} key={blog.key} />
-
               )
-
             })
             :
             <>
-            <div className=' h-32 text-2xl font-bold'>
-              You Don't share any blog 
-            </div>
+              <div className=' h-32 text-2xl font-bold'>
+                You Don't share any blog
+              </div>
             </>
       }
     </div>

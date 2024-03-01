@@ -8,6 +8,9 @@ import { auth } from '../../FireBAse/fireBase';
 import { db } from '../Blogs';
 import { doc, getDoc } from 'firebase/firestore';
 import { logInAcc } from '../../store/authSlice';
+import navlogo from '../../assets/navlogo.png'
+
+
 function NavBar() {
     const active = useSelector(state => state.auth.currentUser)
     const [resp, setResp] = useState(true)
@@ -38,18 +41,13 @@ function NavBar() {
             <div className
                 ="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <figure className='text-white text-xl h-7 w-32 bord er flex items-center justify-center '>
-                    <img src="/src/assets/Blogger-logo-removebg-preview.png" className='' alt="" />
+                    <img src={navlogo} className='' alt="" />
                 </figure>
                 <button
-                    // data-collapse-toggle="navbar-default"
                     type="button"
                     className=' flex justify-center items-center text-2xl   md:hidden md:w-auto border-2  '
 
                     onClick={menuBtn}
-                //  className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400  hover:bg-blue-400 " 
-                //  class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" 
-                // aria-controls="navbar-default" 
-                // aria-expanded="false"
                 >
                     {
                         resp ?
@@ -68,7 +66,7 @@ function NavBar() {
                             style={({ isActive }) => {
                                 return isActive ? { color: "black" } : {};
                             }}
-                            onClick={menuBtn}
+                            onClick={() => setResp(true)}
                         >
                             Home
                         </NavLink>
@@ -77,7 +75,7 @@ function NavBar() {
                             style={({ isActive }) => {
                                 return isActive ? { color: "black" } : {};
                             }}
-                            onClick={menuBtn}
+                            onClick={() => setResp(true)}
 
                         // className={`border-4 text-center h-10 `}
                         >
@@ -90,7 +88,7 @@ function NavBar() {
                                     style={({ isActive }) => {
                                         return isActive ? { color: "black" } : {};
                                     }}
-                                    onClick={menuBtn}
+                                    onClick={() => setResp(true)}
 
                                     className={({ isactive }) => { isactive ? "bg-slate-800 font-light" : '' }}>
                                     add Blog
@@ -99,7 +97,7 @@ function NavBar() {
                                     style={({ isActive }) => {
                                         return isActive ? { color: "black" } : {};
                                     }}
-                                    onClick={menuBtn}
+                                    onClick={() => setResp(true)}
 
                                     className={({ isactive }) => { isactive ? "bg-slate-800 font-light" : '' }}>
                                     Your Blogs
@@ -108,7 +106,7 @@ function NavBar() {
                                     style={({ isActive }) => {
                                         return isActive ? { color: "black" } : {};
                                     }}
-                                    onClick={menuBtn}
+                                    onClick={() => setResp(true)}
 
                                     className={({ isactive }) => { isactive ? "bg-slate-800 font-light" : '' }}>
                                     {active.name}
@@ -120,7 +118,7 @@ function NavBar() {
                                     style={({ isActive }) => {
                                         return isActive ? { color: "black" } : {};
                                     }}
-                                    onClick={menuBtn}
+                                    onClick={() => setResp(true)}
                                     className={' p '}
                                 >
                                     logIn
@@ -129,7 +127,7 @@ function NavBar() {
                                     style={({ isActive }) => {
                                         return isActive ? { color: "black" } : {};
                                     }}
-                                    onClick={menuBtn}
+                                    onClick={() => setResp(true)}
                                     className={''}
                                 >
                                     signUp

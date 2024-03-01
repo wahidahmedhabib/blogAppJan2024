@@ -147,7 +147,7 @@ function Logout() {
                                     </>
                                     :
                                     <img
-                                        src={`${image ? image : "/src/assets/imgAvetar22.png"}`}
+                                        src={`${image ? image : "src/assets/imgAvetar22.png"}`}
                                         className=' h-28 w-28 rounded-full ' alt="pro PIC" />
                             }
                         </div>
@@ -186,7 +186,7 @@ function Logout() {
                     <div className='bg-white py-2 rounded-lg shadow-2xl shadow-blue-400 min-h-[290px] w-[250px] flex flex-col gap-2'>
                         <div className=' '>
                             <div className='  h-24 w-28 flex items-center justify-center   rounded-full mx-auto mt-4  '>
-                                <img src={`${image ? image : "/src/assets/imgAvetar22.png"}`}
+                                <img src={`${image ? image : "src/assets/imgAvetar22.png"}`}
                                     className=' h-28 w-28 rounded-full border border-black' alt="pro PIC" />
                             </div>
 

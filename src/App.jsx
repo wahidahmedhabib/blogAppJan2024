@@ -17,6 +17,7 @@ import { db } from "./FireBAse/auth";
 import { logInAcc } from "./store/authSlice";
 import Logout from "./Component/Logout";
 import YourPosts from "./Component/YourPosts";
+import Swal from "sweetalert2";
 
 const router = createBrowserRouter([
   {
@@ -73,9 +74,15 @@ function App() {
           dispatch(logInAcc(docSnap.data()));
         } else {
           console.log("No such document!");
+          Swal.fire({
+            text: "you did't post any blog",
+        });
         }
       } else {
-        console.log('user is not login!')
+        Swal.fire({
+          text: "Please LogIn Or SignUp to write blogs",
+      });
+        // console.log('user is not login!')
       }
     });
   }, []);

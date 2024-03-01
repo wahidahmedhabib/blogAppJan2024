@@ -73,7 +73,7 @@ function Blogs({ blog }) {
         <div className="bg- white flex h-16 items-center px-1 border-b-2">
           <figure className="h-14 w-14 rounded-full border border-black flex items-center justify-center">
             <img className="h-full w-full bg-center rounded-full"
-              src={blog.image ? blog.image : '/src/assets/imgAvetar22.png'}
+              src={blog.image ? blog.image : 'src/assets/imgAvetar22.png'}
               alt="" />
           </figure>
           <div className="px-2 w-[90%] ">

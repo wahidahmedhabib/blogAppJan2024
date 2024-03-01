@@ -59,25 +59,14 @@ const SignUp = () => {
             <div className=' h-32'>
 
                 <div className=' h-28 w-28 flex items-center justify-center   rounded-full mx-auto mt-4  '>
-
                     <img
-                        // onChange={urlImg}
-                        // onChange={}
-
-                        src={`${imgUrl ? imgUrl : " /src/assets/imgAvetar22.png"}`}
-                        // src={`${edit ? imgUrl : " /src/assets/imgAvetar22.png"}`}
+                        src={`${imgUrl ? imgUrl : "src/assets/imgAvetar22.png"}`}
                         className='border-black border  h-full w-full bg-no-repeat rounded-full ' alt="pro PIC" />
                 </div>
-
                 <div
                     className=' flex items-center justify-center gap-4   h-9 font-bold my-2  text-white cursor-pointer'>
-                    {/* <button
-                        onClick={() => uploadeFile(imgUrl)}
-                        className='w-[100px] border bg-blue-900'>uploade</button> */}
-
-                    {/* <button className='w-[100px] border bg-blue-900'>upDate</button> */}
+          
                 </div>
-                {/* <RiImageEditFill className='relative top-5 left-5 ' /> */}
                 <button
                     className=' h-8 w-8 drop-shadow-lg shadow-2xl
                          shadow-blue-700 flex
